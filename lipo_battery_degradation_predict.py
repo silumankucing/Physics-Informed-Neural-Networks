@@ -11,6 +11,7 @@ from tensorflow.keras.optimizers import Adam
 # ========================================
 
 def generate_synthetic_data(num_samples=1000):
+    
     """Generate synthetic training data for battery degradation"""
     np.random.seed(42)
     
@@ -35,8 +36,11 @@ X_train, y_train = generate_synthetic_data()
 # ========================================
 # 2. Membangun Model PINN
 # ========================================
+
 def build_pinn_model():
-    inputs = Input(shape=(3,))  # [current, temperature, time]
+
+    # [current, temperature, time]
+    inputs = Input(shape=(3,))  
     
     # Hidden layers
     x = Dense(64, activation='tanh')(inputs)
@@ -44,7 +48,7 @@ def build_pinn_model():
     x = Dense(64, activation='tanh')(x)
     
     # Output layer
-    outputs = Dense(1, activation='sigmoid')(x)  # Kapasitas 0-1
+    outputs = Dense(1, activation='sigmoid')(x)
     
     model = Model(inputs=inputs, outputs=outputs)
     return model
@@ -54,6 +58,7 @@ model = build_pinn_model()
 # ========================================
 # 3. Loss Function Fisika + Data
 # ========================================
+
 def physics_loss(y_true, y_pred, X):
     """Physics-based loss for battery degradation"""
     current, temperature, time = X[:, 0], X[:, 1], X[:, 2]
@@ -89,6 +94,7 @@ history = model.fit(X_train, y_train,
 # ========================================
 # 5. Visualisasi Hasil
 # ========================================
+
 def plot_results():
     # Plot training history
     plt.figure(figsize=(12, 5))
